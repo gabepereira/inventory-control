@@ -1,0 +1,17 @@
+{
+    "files.exclude": {
+        "**/.vscode": false,
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/*.toml": true,
+        ".buckconfig": true,
+        ".eslintrc.js": true,
+        ".flowconfig": true,
+        ".gitattributes": true,
+        ".watchmanconfig": true,
+        "babel.config.js": true,
+        "metro.config.js": true,
+        "ios": true,
+        "__tests__": true
+    },
+}
