@@ -6,5 +6,7 @@ export default createAppContainer(
     createSwitchNavigator({
         Login,
         Home,
+    }, {
+        mode: 'modal'
     })
 );
