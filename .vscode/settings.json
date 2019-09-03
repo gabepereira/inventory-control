@@ -8,9 +8,12 @@
         ".eslintrc.js": true,
         ".flowconfig": true,
         ".gitattributes": true,
+        // ".gitignore": true,
         ".watchmanconfig": true,
         "babel.config.js": true,
         "metro.config.js": true,
+        "yarn.lock": true,
+        "android": true,
         "ios": true,
         "__tests__": true
     },
