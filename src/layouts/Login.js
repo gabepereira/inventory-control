@@ -1,17 +1,40 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import api from '../services/api';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet }
+from 'react-native';
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      token: '',
     };
   }
 
   onSubmit = () => {
-    
+    const query = `
+      mutation {
+        auth(
+          email: "${this.state.email}",
+          password: "${this.state.password}"
+        ) {
+          token
+        }
+      }
+    `;
+    api(query).then(res => {
+      this.setState({
+        token: res.data.data.auth.token
+      });
+      this.props.navigation.navigate('Home');
+    }).catch(error => error);
   }
 
   render() {
@@ -29,12 +52,12 @@ export default class Login extends React.Component {
             textContentType='password'
             secureTextEntry={true}
             onChangeText={password => this.setState({password})}/>
-        </View>
         <TouchableOpacity onPress={this.onSubmit}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>Sign In</Text>
           </View>
         </TouchableOpacity>
+        </View>
       </View>  
     );
   }
@@ -42,16 +65,22 @@ export default class Login extends React.Component {
 
 const styles = StyleSheet.create({
   body: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e70',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#e70',
   },
   signIn: {
-    margin: 10
+    paddingTop: 24,
+    paddingBottom: 12,
+    paddingLeft: 24,
+    paddingRight: 24,
+    margin: 10,
+    backgroundColor: '#fff',
+    borderRadius: 10
   },
   text: {
     textAlign: 'center',
@@ -59,12 +88,10 @@ const styles = StyleSheet.create({
   },
   input: {
     width: 200,
-    borderBottomWidth: 1,
-    borderColor: '#cccccc'
   },
   button: {
-    margin: 10,
-    paddingVertical: 5,
+    margin: 24,
+    paddingVertical: 6,
     paddingHorizontal: 10,
     width: 'auto',
     height: 'auto',
