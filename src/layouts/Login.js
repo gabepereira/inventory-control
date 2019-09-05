@@ -5,8 +5,11 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet }
-from 'react-native';
+  StyleSheet,
+  Image
+} from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import bg from '../assets/img/bg.png';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -40,59 +43,81 @@ export default class Login extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.signIn}>
-          <TextInput style={styles.input}
-            placeholder='E-mail'
-            editable={true}
-            textContentType='emailAddress'
-            onChangeText={email => this.setState({email})}/>
-          <TextInput style={styles.input}
-            placeholder='Password'
-            editable={true}
-            textContentType='password'
-            secureTextEntry={true}
-            onChangeText={password => this.setState({password})}/>
-        <TouchableOpacity onPress={this.onSubmit}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>Sign In</Text>
+        <SafeAreaView style={styles.signIn}>
+          <View style={styles.signInWrapper}>
+            <Image style={styles.bg} source={bg} resizeMode="contain"/>
+            <Text style={styles.text}>GraphQL + React Native</Text>
+            <TextInput style={styles.input}
+              autoCorrect={false}
+              spellCheck={false}
+              placeholder='E-mail'
+              placeholderTextColor='#ffffff'
+              editable={true}
+              textContentType='emailAddress'
+              onChangeText={email => this.setState({email})}/>
+            <TextInput style={styles.input}
+              autoCorrect={false}
+              spellCheck={false}
+              placeholder='Password'
+              placeholderTextColor='#ffffff'
+              editable={true}
+              textContentType='password'
+              secureTextEntry={true}
+              onChangeText={password => this.setState({password})}/>
+            <TouchableOpacity onPress={this.onSubmit}>
+              <View style={styles.button}>
+                <Text style={styles.buttonText}>Sign In</Text>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-        </View>
-      </View>  
+        </SafeAreaView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  body: {
-    backgroundColor: '#e70',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e70',
   },
   signIn: {
-    paddingTop: 24,
-    paddingBottom: 12,
-    paddingLeft: 24,
-    paddingRight: 24,
-    margin: 10,
-    backgroundColor: '#fff',
-    borderRadius: 10
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+  },
+  signInWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    paddingHorizontal: 48,
+    paddingVertical: 0,
   },
   text: {
     textAlign: 'center',
-    margin: 10
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: 24,
+    marginVertical: 24,
+    color: '#303030'
   },
   input: {
-    width: 200,
-  },
-  button: {
-    margin: 24,
+    width: '100%',
+    color: '#ffffff',
+    backgroundColor: '#ccc',
+    marginVertical: 2,
+    borderRadius: 3,
     paddingVertical: 6,
     paddingHorizontal: 10,
+  },
+  button: {
+    marginVertical: 24,
+    marginHorizontal: 'auto',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
     width: 'auto',
     height: 'auto',
     justifyContent: 'center',
@@ -102,5 +127,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#ffffff'
+  },
+  bg: {
+    width: '100%',
   }
 });
