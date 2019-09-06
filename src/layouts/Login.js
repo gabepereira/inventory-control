@@ -1,9 +1,10 @@
 import React from 'react';
 import api from '../services/api';
+import Input from '../components/Input/Input';
 import {
   View,
   Text,
-  TextInput,
+  ActivityIndicator,
   TouchableOpacity,
   StyleSheet,
   Image
@@ -18,10 +19,32 @@ export default class Login extends React.Component {
       email: '',
       password: '',
       token: '',
+      loading: false,
+      error: false,
     };
   }
 
+  handleInput = (value, action) => {
+    switch (action) {
+      case 'email':
+        this.setState({
+          email: value
+        });
+        break;
+      case 'password':
+        this.setState({
+          password: password
+        });
+        break;
+      default:
+        break;
+    }
+  }
+
   onSubmit = () => {
+    this.setState({
+      loading: true,
+    });
     const query = `
       mutation {
         auth(
@@ -33,10 +56,18 @@ export default class Login extends React.Component {
       }
     `;
     api(query).then(res => {
-      this.setState({
-        token: res.data.data.auth.token
-      });
-      this.props.navigation.navigate('Home');
+      data = res.data.data;
+      if (data == null) {
+        this.setState({
+          loading: false,
+          error: true
+        });
+      } else {
+        this.setState({
+          token: data.auth.token
+        });
+        this.props.navigation.navigate('Home');
+      }
     }).catch(error => error);
   }
 
@@ -44,31 +75,41 @@ export default class Login extends React.Component {
     return (
       <View style={styles.container}>
         <SafeAreaView style={styles.signIn}>
+          <ActivityIndicator
+            style={[loadingStyle.defaultStyle, this.state.loading ? loadingStyle.isLoading : loadingStyle.isNotLoading]}
+            size="large" color="#303030"
+          />
           <View style={styles.signInWrapper}>
             <Image style={styles.bg} source={bg} resizeMode="contain"/>
             <Text style={styles.text}>GraphQL + React Native</Text>
-            <TextInput style={styles.input}
-              autoCorrect={false}
-              spellCheck={false}
-              placeholder='E-mail'
-              placeholderTextColor='#ffffff'
-              editable={true}
-              textContentType='emailAddress'
-              onChangeText={email => this.setState({email})}/>
-            <TextInput style={styles.input}
-              autoCorrect={false}
-              spellCheck={false}
-              placeholder='Password'
-              placeholderTextColor='#ffffff'
-              editable={true}
-              textContentType='password'
-              secureTextEntry={true}
-              onChangeText={password => this.setState({password})}/>
+
+            <Input
+              onFocus={() => this.setState({ error: false })}
+              onChange={value => this.handleInput(value, 'email')}
+              style={styles.input}
+              placeholder={{
+                text: 'E-mail',
+                color: '#ffffff'
+              }}
+              type='emailAddress'
+            />
+            <Input
+              onFocus={() => this.setState({ error: false })}
+              onChange={value => this.handleInput(value, 'password')}
+              style={styles.input}
+              placeholder={{
+                text: 'Password',
+                color: '#ffffff'
+              }}
+              type='password'
+            />
+
             <TouchableOpacity onPress={this.onSubmit}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}>Sign In</Text>
               </View>
             </TouchableOpacity>
+            <Text style={this.state.error ? errorStyle.error : errorStyle.noError}>E-mail or password incorrect!</Text>
           </View>
         </SafeAreaView>
       </View>
@@ -107,7 +148,7 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     color: '#ffffff',
-    backgroundColor: '#ccc',
+    backgroundColor: '#cfcfcf',
     marginVertical: 2,
     borderRadius: 3,
     paddingVertical: 6,
@@ -130,5 +171,35 @@ const styles = StyleSheet.create({
   },
   bg: {
     width: '100%',
+  },
+});
+
+const errorStyle = StyleSheet.create({
+  error: {
+    color: "#e20714",
+    textAlign: 'center',
+    opacity: 1,
+  },
+  noError: {
+    opacity: 0
   }
 });
+
+const loadingStyle = StyleSheet.create({
+  defaultStyle: {
+    padding: 24,
+    position: 'absolute',
+    margin: 'auto',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    zIndex: 2
+  },
+  isLoading: {
+    opacity: 1,
+  },
+  isNotLoading: {
+    opacity: 0
+  }
+})
