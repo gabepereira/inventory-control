@@ -33,7 +33,7 @@ export default class Login extends React.Component {
         break;
       case 'password':
         this.setState({
-          password: password
+          password: value
         });
         break;
       default:
@@ -91,7 +91,7 @@ export default class Login extends React.Component {
                 text: 'E-mail',
                 color: '#ffffff'
               }}
-              type='emailAddress'
+              keyboardType='email-address'
             />
             <Input
               onFocus={() => this.setState({ error: false })}
@@ -101,7 +101,7 @@ export default class Login extends React.Component {
                 text: 'Password',
                 color: '#ffffff'
               }}
-              type='password'
+              password={true}
             />
 
             <TouchableOpacity onPress={this.onSubmit}>
@@ -194,10 +194,10 @@ const loadingStyle = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    zIndex: 2
   },
   isLoading: {
     opacity: 1,
+    zIndex: 1
   },
   isNotLoading: {
     opacity: 0

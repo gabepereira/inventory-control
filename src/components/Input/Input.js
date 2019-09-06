@@ -12,7 +12,8 @@ const Input = props => {
             placeholder={props.placeholder ? props.placeholder.text : ''}
             placeholderTextColor={props.placeholder ? props.placeholder.color : '#ffffff'}
             editable={props.editable ? props.editable : true}
-            textContentType={props.type ? props.type : 'none'}>
+            keyboardType={props.keyboardType ? props.keyboardType : 'default'}
+            secureTextEntry={props.password ? props.password : false}>
         </TextInput>
     )
 };
