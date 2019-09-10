@@ -1,10 +1,10 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { Home, Login } from './layouts';
+import { Dashboard, Login } from './layouts';
 
 export default createAppContainer(
     createSwitchNavigator({
+        Dashboard,
         Login,
-        Home,
     }, {
         mode: 'modal'
     })

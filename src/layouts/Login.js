@@ -18,7 +18,6 @@ export default class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      token: '',
       loading: false,
       error: false,
     };
@@ -63,10 +62,9 @@ export default class Login extends React.Component {
           error: true
         });
       } else {
-        this.setState({
+        this.props.navigation.navigate('Home', {
           token: data.auth.token
         });
-        this.props.navigation.navigate('Home');
       }
     }).catch(error => error);
   }
